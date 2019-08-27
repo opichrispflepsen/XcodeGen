@@ -756,7 +756,8 @@ public class PBXProjGenerator {
                     dstPath: "",
                     dstSubfolderSpec: .plugins,
                     name: "Embed App Extensions",
-                    files: extensions
+                    files: extensions,
+                    runOnlyForDeploymentPostprocessing: target.extensionsCopyOnlyOnInstall ?? false
                 )
             )
 

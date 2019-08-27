@@ -45,6 +45,7 @@ public struct Target: ProjectTarget {
     public var deploymentTarget: Version?
     public var attributes: [String: Any]
     public var productName: String
+    public var extensionsCopyOnlyOnInstall: Bool?
 
     public var isLegacy: Bool {
         return legacy != nil
@@ -79,6 +80,7 @@ public struct Target: ProjectTarget {
         buildRules: [BuildRule] = [],
         scheme: TargetScheme? = nil,
         legacy: LegacyTarget? = nil,
+        extensionsCopyOnlyOnInstall: Bool? = nil,
         attributes: [String: Any] = [:]
     ) {
         self.name = name
@@ -101,6 +103,7 @@ public struct Target: ProjectTarget {
         self.buildRules = buildRules
         self.scheme = scheme
         self.legacy = legacy
+        self.extensionsCopyOnlyOnInstall = extensionsCopyOnlyOnInstall
         self.attributes = attributes
     }
 }
@@ -260,6 +263,7 @@ extension Target: Equatable {
             lhs.buildRules == rhs.buildRules &&
             lhs.scheme == rhs.scheme &&
             lhs.legacy == rhs.legacy &&
+            lhs.extensionsCopyOnlyOnInstall == rhs.extensionsCopyOnlyOnInstall &&
             NSDictionary(dictionary: lhs.attributes).isEqual(to: rhs.attributes)
     }
 }
@@ -357,6 +361,7 @@ extension Target: NamedJSONDictionaryConvertible {
         buildRules = jsonDictionary.json(atKeyPath: "buildRules") ?? []
         scheme = jsonDictionary.json(atKeyPath: "scheme")
         legacy = jsonDictionary.json(atKeyPath: "legacy")
+        extensionsCopyOnlyOnInstall = jsonDictionary.json(atKeyPath: "extensionsCopyOnlyOnInstall")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
     }
 }
@@ -381,6 +386,7 @@ extension Target: JSONEncodable {
             "entitlements": entitlements?.toJSONValue(),
             "transitivelyLinkDependencies": transitivelyLinkDependencies,
             "directlyEmbedCarthageDependencies": directlyEmbedCarthageDependencies,
+            "extensionsCopyOnlyOnInstall": extensionsCopyOnlyOnInstall,
             "requiresObjCLinking": requiresObjCLinking,
             "scheme": scheme?.toJSONValue(),
             "legacy": legacy?.toJSONValue(),
